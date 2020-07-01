@@ -22,6 +22,11 @@
               </v-col>
             </v-row>
             <v-card-text>
+              <p>卓選択</p>
+              <v-checkbox v-model="targetGame.ichigun" label="一軍"></v-checkbox>
+              <v-checkbox v-model="targetGame.sangun" label="三軍"></v-checkbox>
+            </v-card-text>
+            <v-card-text>
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">
                   <v-select
@@ -29,13 +34,12 @@
                     item-text="name"
                     label="面子1"
                     item-value="No"
+                    v-model="targetGame.member1"
                     required>
                   ></v-select>
                 </v-col>
               </v-row>
               <v-text-field v-model="targetGame.score1" label="点数"></v-text-field>
-              <v-checkbox v-model="targetGame.ichigun1" label="一軍"></v-checkbox>
-              <v-checkbox v-model="targetGame.sangun1" label="三軍"></v-checkbox>
               <v-checkbox v-model="targetGame.tori1" label="鳥"></v-checkbox>
               <v-checkbox v-model="targetGame.tobi1" label="飛"></v-checkbox>
               <v-checkbox v-model="targetGame.hako1" label="箱"></v-checkbox>
@@ -64,7 +68,7 @@
                     :items="targetGame.members"
                     item-text="name"
                     label="面子3"
-                    item-value="No"
+                    item-value3="{No,name}"
                     required>
                   ></v-select>
                 </v-col>
