@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     login_user: null,
     drawer: false,
-    games: []
+    games: [],
+    scores: []
     },
   mutations: {
     setLoginUser(state, user) {

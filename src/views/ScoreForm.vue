@@ -2,30 +2,30 @@
   <v-container text-xs-center>
     <v-layout row wrap justify-center>
 
-      <v-flex xs12 class="text-center">
-        <h1>点数入力</h1>
-      </v-flex>
-
       <v-flex>
         <v-card>
           <v-form>
-            <v-row align="center">
-              <v-col class="d-flex" cols="12" sm="6">
-                <v-select
-                  :items="games"
-                  item-text="name"
-                  label="対局選択"
-                  item-value="id"
-                  v-model="game_id"
-                  required>
-                ></v-select>
-              </v-col>
-            </v-row>
-            <v-card-text>
-              <p>卓選択</p>
-              <v-checkbox v-model="targetGame.ichigun" label="一軍"></v-checkbox>
-              <v-checkbox v-model="targetGame.sangun" label="三軍"></v-checkbox>
+          <v-card-title>卓設定</v-card-title>
+            <v-card-text> 
+              <v-row align="center">
+                <v-col class="d-flex" cols="12" sm="6">
+                  <v-select
+                    :items="games"
+                    item-text="name"
+                    label="対局選択"
+                    item-value="id"
+                    v-model="score.game_id"
+                    required>
+                  </v-select>
+                </v-col>
+              </v-row>
+              <v-radio-group v-model="score.taku" row required>
+                <v-radio label="一軍" value=1></v-radio>
+                <v-radio label="三軍" value=-1></v-radio>
+                <v-radio label="その他" value=0></v-radio>                
+              </v-radio-group>
             </v-card-text>
+            <v-card-title>点数入力</v-card-title>
             <v-card-text>
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">
@@ -33,16 +33,18 @@
                     :items="targetGame.members"
                     item-text="name"
                     label="面子1"
-                    item-value="No"
-                    v-model="targetGame.member1"
+                    item-value="{No,name}"
+                    v-model="score.member1.name"
                     required>
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-text-field v-model="targetGame.score1" label="点数"></v-text-field>
-              <v-checkbox v-model="targetGame.tori1" label="鳥"></v-checkbox>
-              <v-checkbox v-model="targetGame.tobi1" label="飛"></v-checkbox>
-              <v-checkbox v-model="targetGame.hako1" label="箱"></v-checkbox>
+              <v-text-field v-model.number="score.member1.score" label="点数" required></v-text-field>
+              <v-row justify="space-around">
+                <v-checkbox class="mx-2" v-model="score.member1.tori" label="鳥" value=1></v-checkbox>
+                <v-checkbox class="mx-2" v-model="score.member1.tobi" label="飛" value=1></v-checkbox>
+                <v-checkbox class="mx-2" v-model="score.member1.hako" label="箱" value=1></v-checkbox>
+              </v-row>
             </v-card-text>
             <v-card-text>
               <v-row align="center">
@@ -52,14 +54,17 @@
                     item-text="name"
                     label="面子2"
                     item-value="No"
+                    v-model="score.member2.name"
                     required>
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-text-field v-model="targetGame.score2" label="点数"></v-text-field>
-              <v-checkbox v-model="targetGame.tori2" label="鳥"></v-checkbox>
-              <v-checkbox v-model="targetGame.tobi2" label="飛"></v-checkbox>
-              <v-checkbox v-model="targetGame.hako2" label="箱"></v-checkbox>
+              <v-text-field v-model.number="score.member2.score" label="点数" required></v-text-field>
+              <v-row justify="space-around">
+                <v-checkbox v-model="score.member2.tori" label="鳥" value=1></v-checkbox>
+                <v-checkbox v-model="score.member2.tobi" label="飛" value=1></v-checkbox>
+                <v-checkbox v-model="score.member2.hako" label="箱" value=1></v-checkbox>
+              </v-row>
             </v-card-text>
             <v-card-text>
               <v-row align="center">
@@ -68,15 +73,18 @@
                     :items="targetGame.members"
                     item-text="name"
                     label="面子3"
-                    item-value3="{No,name}"
+                    item-value3="No"
+                    v-model="score.member3.name"
                     required>
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-text-field v-model="targetGame.score3" label="点数"></v-text-field>
-              <v-checkbox v-model="targetGame.tori3" label="鳥"></v-checkbox>
-              <v-checkbox v-model="targetGame.tobi3" label="飛"></v-checkbox>
-              <v-checkbox v-model="targetGame.hako3" label="箱"></v-checkbox>
+              <v-text-field v-model.number="score.member3.score" label="点数" required></v-text-field>
+              <v-row justify="space-around">
+                <v-checkbox v-model="score.member3.tori" label="鳥" value=1></v-checkbox>
+                <v-checkbox v-model="score.member3.tobi" label="飛" value=1></v-checkbox>
+                <v-checkbox v-model="score.member3.hako" label="箱" value=1></v-checkbox>
+              </v-row>
             </v-card-text>
             <v-card-text v-show="targetGame.mode=='4'">
               <v-row align="center">
@@ -86,31 +94,34 @@
                     item-text="name"
                     label="面子4"
                     item-value="No"
+                    v-model="score.member4.name"
                     required>
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-text-field v-model="targetGame.score4" label="点数"></v-text-field>
-              <v-checkbox v-model="targetGame.tori4" label="鳥"></v-checkbox>
-              <v-checkbox v-model="targetGame.tobi4" label="飛"></v-checkbox>
-              <v-checkbox v-model="targetGame.hako4" label="箱"></v-checkbox>
+              <v-text-field v-model.number="score.member4.score" label="点数" required></v-text-field>
+              <v-row justify="space-around">
+                <v-checkbox v-model="score.member4.tori" label="鳥" value=1></v-checkbox>
+                <v-checkbox v-model="score.member4.tobi" label="飛" value=1></v-checkbox>
+                <v-checkbox v-model="score.member4.hako" label="箱" value=1></v-checkbox>
+              </v-row>
             </v-card-text>
             <v-card-text>
-               <div class="text-center">
-                 <v-btn color="info" class="ml-2" @click="submit">点数確定</v-btn>
-               </div>
+              <div class="text-center">
+                <v-btn color="info" class="ml-2" @click="submit">点数確定</v-btn>
+              </div>
             </v-card-text>  
           </v-form>
         </v-card>
       </v-flex>
-<!--
-      <v-row align="center">
-        <div>
-          <hr>
 
-          {{targetGame}}
+      <v-flex>
+        <div>
+          <p>
+            {{score}}
+          </p>
         </div>
-      </v-row>
+      </v-flex>
 -->
     </v-layout>
   </v-container>
@@ -121,23 +132,28 @@ import { mapActions } from 'vuex';
 export default {
   created () {
     this.games = this.$store.state.games
-    this.items = this.games
   },
   data () {
     return {
       games: [],
       items: [],
-      game_id: null,
       targetGame: [],
-      game_list:[],
+      //game_id:"",
+      score: {
+        game_id:null,
+        member1:{},
+        member2:{},
+        member3:{},
+        member4:{},
+      },
       key:[],
-      id:null,
+      score_id:1,
     }
   },
   watch:{
-    game_id: function(){
-      this.targetGame = this.$store.getters.getMembersById(this.game_id)
-    }
+    'score.game_id': function(){
+      this.targetGame = this.$store.getters.getMembersById(this.score.game_id)
+    },
   },
 
   methods:{

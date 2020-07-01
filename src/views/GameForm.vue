@@ -34,8 +34,11 @@
               <ul>
                 <li v-for="(item, name) in game.members" :key="name">{{item.No}}.{{item.name}}</li>
               </ul>
-              <v-text-field v-model="member_name" label="名前"></v-text-field>
-              <v-btn @click="addmembers">面子追加</v-btn>
+              <v-text-field v-model="member_name" label="名前">
+                <template v-slot:append>
+                  <v-btn color="info" @click="addmembers">追加</v-btn>
+                </template>
+              </v-text-field>
             </v-card-text>
             <v-card-text>
                <div class="text-center">

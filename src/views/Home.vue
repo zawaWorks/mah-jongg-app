@@ -1,8 +1,12 @@
 <template>
-  <div class="about">
-    <h1>なんとなく作ったホーム画面</h1>
-    <h1>{{ games }}</h1>
-  </div>
+  <v-container text-xs-center>
+    <v-layout row wrap justify-center>
+        <div class="about">
+          <h1>なんとなく作ったホーム画面</h1>
+          <h1>{{ games }}</h1>
+        </div>
+    </v-layout>
+  </v-container>
 </template>
 
 
@@ -11,7 +15,7 @@
 import { mapActions } from 'vuex';
 export default {
   created () {
-    //this.fetchGames()
+    this.fetchGames()
     this.games = this.$store.state.games
     },
   data () {

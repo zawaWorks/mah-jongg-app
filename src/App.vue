@@ -4,6 +4,7 @@
       app
       color="primary"
       dark
+      dense
     >
       <!--<v-app-bar-nav-icon v-show="$store.state.login_user" @click.stop="toggleSideMenu"></v-app-bar-nav-icon>-->
       <v-app-bar-nav-icon @click.stop="toggleSideMenu"></v-app-bar-nav-icon>
