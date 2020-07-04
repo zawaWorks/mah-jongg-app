@@ -22,12 +22,14 @@
               <v-btn v-else @click="detail=!detail">非表示</v-btn>
             </div>
             <v-card-text v-show="detail">
-               <v-text-field v-model="game.rate" label="レート"></v-text-field>
+               <v-text-field v-model="game.rate" label="ポイントレート"></v-text-field>
                <v-text-field v-model="game.nengu" label="年貢"></v-text-field>
                <v-text-field v-model="game.start_score" label="原点"></v-text-field>
                <v-text-field v-model="game.kaeshi" label="原点返し"></v-text-field>
                <v-text-field v-model="game.uma" label="ウマ"></v-text-field>
                <v-text-field v-model="game.oka" label="オカ"></v-text-field>
+               <v-text-field v-model="game.tori" label="焼き鳥"></v-text-field>
+               <v-text-field v-model="game.tobashi" label="飛ばし賞"></v-text-field>
             </v-card-text>
             <v-card-text>
               <p>面子リスト</p>
@@ -73,6 +75,8 @@ export default {
     this.game.kaeshi = 30
     this.game.uma = 20
     this.game.oka = 10
+    this.game.tori = 10
+    this.game.tobashi = 10
     this.game.members = []
   },
   data () {
@@ -101,7 +105,7 @@ export default {
       this.member_No++
     },
     submit () {
-      //this.game.id = null
+      this.game.date = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
       this.addGame(this.game)
       this.game = {}
       this.game.name = "名無しの対局"
@@ -114,7 +118,6 @@ export default {
       this.game.oka = 10
       this.game.members = []
       this.member_No = 1
-      this.game_No++
     },
       ...mapActions(['addGame'])
   }

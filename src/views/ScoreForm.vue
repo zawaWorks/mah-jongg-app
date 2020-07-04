@@ -33,18 +33,19 @@
                     :items="targetGame.members"
                     item-text="name"
                     label="面子1"
-                    item-value="{No,name}"
-                    v-model="score.member1.name"
+                    item-value="No"
+                    v-model="score.member1.name_no"
                     required>
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-text-field v-model.number="score.member1.score" label="点数" required></v-text-field>
+              <v-text-field type="number" v-model.number="score.member1.score" label="点数（百点単位）" required></v-text-field>
               <v-row justify="space-around">
                 <v-checkbox class="mx-2" v-model="score.member1.tori" label="鳥" value=1></v-checkbox>
                 <v-checkbox class="mx-2" v-model="score.member1.tobi" label="飛" value=1></v-checkbox>
                 <v-checkbox class="mx-2" v-model="score.member1.hako" label="箱" value=1></v-checkbox>
               </v-row>
+              <h2>得点：{{member1Result}}</h2>
             </v-card-text>
             <v-card-text>
               <v-row align="center">
@@ -54,17 +55,18 @@
                     item-text="name"
                     label="面子2"
                     item-value="No"
-                    v-model="score.member2.name"
+                    v-model="score.member2.name_no"
                     required>
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-text-field v-model.number="score.member2.score" label="点数" required></v-text-field>
+              <v-text-field type="number" v-model.number="score.member2.score" label="点数（百点単位）" required></v-text-field>
               <v-row justify="space-around">
                 <v-checkbox v-model="score.member2.tori" label="鳥" value=1></v-checkbox>
                 <v-checkbox v-model="score.member2.tobi" label="飛" value=1></v-checkbox>
                 <v-checkbox v-model="score.member2.hako" label="箱" value=1></v-checkbox>
               </v-row>
+              <h2>得点：{{score.member2.result}}</h2>
             </v-card-text>
             <v-card-text>
               <v-row align="center">
@@ -74,17 +76,18 @@
                     item-text="name"
                     label="面子3"
                     item-value3="No"
-                    v-model="score.member3.name"
+                    v-model="score.member3.name_no"
                     required>
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-text-field v-model.number="score.member3.score" label="点数" required></v-text-field>
+              <v-text-field type="number" v-model.number="score.member3.score" label="点数（百点単位）" required></v-text-field>
               <v-row justify="space-around">
                 <v-checkbox v-model="score.member3.tori" label="鳥" value=1></v-checkbox>
                 <v-checkbox v-model="score.member3.tobi" label="飛" value=1></v-checkbox>
                 <v-checkbox v-model="score.member3.hako" label="箱" value=1></v-checkbox>
               </v-row>
+              <h2>得点：{{score.member3.result}}</h2>
             </v-card-text>
             <v-card-text v-show="targetGame.mode=='4'">
               <v-row align="center">
@@ -94,17 +97,18 @@
                     item-text="name"
                     label="面子4"
                     item-value="No"
-                    v-model="score.member4.name"
+                    v-model="score.member4.name_no"
                     required>
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-text-field v-model.number="score.member4.score" label="点数" required></v-text-field>
+              <v-text-field type="number" v-model.number="score.member4.score" label="点数（百点単位）" required></v-text-field>
               <v-row justify="space-around">
                 <v-checkbox v-model="score.member4.tori" label="鳥" value=1></v-checkbox>
                 <v-checkbox v-model="score.member4.tobi" label="飛" value=1></v-checkbox>
                 <v-checkbox v-model="score.member4.hako" label="箱" value=1></v-checkbox>
               </v-row>
+              <h2>得点：{{score.member4.result}}</h2>
             </v-card-text>
             <v-card-text>
               <div class="text-center">
@@ -118,6 +122,7 @@
       <v-flex>
         <div>
           <p>
+            {{targetGame}}
             {{score}}
           </p>
         </div>
@@ -138,22 +143,44 @@ export default {
       games: [],
       items: [],
       targetGame: [],
-      //game_id:"",
+      tori: -10,
+      tobi: 10,
+      hako: 10,
       score: {
         game_id:null,
-        member1:{},
-        member2:{},
-        member3:{},
-        member4:{},
+        member1:{
+          result:0,
+          tori:0
+        },
+        member2:{
+          result:0
+        },
+        member3:{
+          result:0
+        },
+        member4:{
+          result:0
+        },
       },
       key:[],
       score_id:1,
+    }
+  },
+  computed:{
+    member1Result: function(){
+      return this.score.member1.score + (this.targetGame.nengu * this.score.taku) + (this.targetGame.tori * this.score.member1.tori)
+      
+    },
+    member2Result: function(){
+      return this.score.member2.score + (this.targetGame.nengu * this.score.taku) + (this.targetGame.tori * this.score.member2.tori)
+      
     }
   },
   watch:{
     'score.game_id': function(){
       this.targetGame = this.$store.getters.getMembersById(this.score.game_id)
     },
+
   },
 
   methods:{
