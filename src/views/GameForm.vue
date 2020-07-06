@@ -26,8 +26,8 @@
                <v-text-field v-model="game.nengu" label="年貢"></v-text-field>
                <v-text-field v-model="game.start_score" label="原点"></v-text-field>
                <v-text-field v-model="game.kaeshi" label="原点返し"></v-text-field>
-               <v-text-field v-model="game.uma" label="ウマ"></v-text-field>
-               <v-text-field v-model="game.oka" label="オカ"></v-text-field>
+               <v-text-field v-model="game.uma1" label="ウマ（1着）"></v-text-field>
+               <v-text-field v-model="game.uma2" label="ウマ（2着）"></v-text-field>
                <v-text-field v-model="game.tori" label="焼き鳥"></v-text-field>
                <v-text-field v-model="game.tobashi" label="飛ばし賞"></v-text-field>
             </v-card-text>
@@ -73,8 +73,8 @@ export default {
     this.game.nengu = 10
     this.game.start_score = 25
     this.game.kaeshi = 30
-    this.game.uma = 20
-    this.game.oka = 10
+    this.game.uma1 = 20
+    this.game.uma2 = 10
     this.game.tori = 10
     this.game.tobashi = 10
     this.game.members = []
@@ -112,10 +112,10 @@ export default {
       this.game.mode = "4"
       this.game.rate = 0.3
       this.game.nengu = 10
-      this.game.start_score = 25000
-      this.game.kaeshi = 30000
-      this.game.uma = 20
-      this.game.oka = 10
+      this.game.start_score = 25
+      this.game.kaeshi = 30
+      this.game.uma1 = 20
+      this.game.uma2 = 10
       this.game.members = []
       this.member_No = 1
     },

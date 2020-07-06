@@ -30,6 +30,10 @@ export default new Vuex.Store({
 
       state.game[index] = game
     },
+    addScore (state, { id, score}) {
+      score.id = id
+      state.scores.push(score)
+    },
     deleteAddress (state, { id }) {
       const index = state.addresses.findIndex(address => address.id === id)
 
@@ -48,6 +52,11 @@ export default new Vuex.Store({
     addGame({ commit }, game) {
       firebase.firestore().collection(`games`).add(game).then(doc => {
         commit('addGame', { id: doc.id, game})
+      })
+    },
+    addScore({ commit }, score) {
+      firebase.firestore().collection(`scores`).add(score).then(doc => {
+        commit('addScore', { id: doc.id, score})
       })
     }
   },
