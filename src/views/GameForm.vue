@@ -1,10 +1,10 @@
 <template>
-  <v-container text-xs-center>
+  <v-container text-xs-center justify-center>
+    <div id="nav">
+      <router-link :to="{ name: 'Game_edit' }">対局設定</router-link> |
+      <router-link :to="{ name: 'about' }">対局編集</router-link>
+    </div>
     <v-layout row wrap justify-center>
-
-      <v-flex xs12 class="text-center">
-        <h1>対局設定</h1>
-      </v-flex>
 
       <v-flex>
         <v-card>
@@ -31,6 +31,7 @@
                <v-text-field v-model="game.tori" label="焼き鳥"></v-text-field>
                <v-text-field v-model="game.tobashi" label="飛ばし賞"></v-text-field>
             </v-card-text>
+            <v-divider :inset="inset"></v-divider>
             <v-card-text>
               <p>面子リスト</p>
               <ul>
@@ -51,7 +52,7 @@
           </v-form>
         </v-card>
       </v-flex>
-
+<!--
       <v-flex>
         <div>
           <hr>

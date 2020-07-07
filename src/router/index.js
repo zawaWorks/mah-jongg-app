@@ -4,6 +4,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import GameForm from '../views/GameForm.vue'
 import ScoreForm from '../views/ScoreForm.vue'
+import ScoreView from '../views/ScoreView.vue'
+import RankingView from '../views/RankingView.vue'
 import AddressForm from '../views/AddressForm.vue'
 
 Vue.use(VueRouter)
@@ -14,11 +16,11 @@ Vue.use(VueRouter)
     name: 'Home',
     component: Home
   },
-  {
-    path: '/home',
-    name: 'Home1',
-    component: Home
-  },
+  //{
+  //  path: '/home',
+  //  name: 'Home1',
+  //  component: Home
+  //},
   {
     path: '/game/:game_id?/edit',
     name: 'Game_edit',
@@ -28,6 +30,16 @@ Vue.use(VueRouter)
     path: '/score_input',
     name: 'Score_input',
     component: ScoreForm
+  },
+  {
+    path: '/score_view',
+    name: 'Score_view',
+    component: ScoreView
+  },
+  {
+    path: '/ranking',
+    name: 'Ranking_view',
+    component: RankingView
   },
   {
     path: '/addresses/:address_id?/edit',

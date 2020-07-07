@@ -58,7 +58,12 @@ export default new Vuex.Store({
       firebase.firestore().collection(`scores`).add(score).then(doc => {
         commit('addScore', { id: doc.id, score})
       })
-    }
+    },
+    fetchScores ({ commit }){
+      firebase.firestore().collection(`scores`).get().then(snapshot => {
+        snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
+      })
+    },
   },
   getters:{
     userName: state => state.login_user ? state.login_user.displayName : '',

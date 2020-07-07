@@ -1,7 +1,11 @@
 <template>
-  <v-container text-xs-center>
-    <v-layout row wrap justify-center>
+  <v-container text-xs-center justify-center>
+    <div id="nav">
+      <router-link :to="{ name: 'Score_input' }">点数入力</router-link> |
+      <router-link :to="{ name: 'Score_view' }">点数編集</router-link>
+    </div>
 
+    <v-layout row wrap justify-center>
       <v-flex>
         <v-card>
           <v-form>
@@ -25,7 +29,8 @@
                 <v-radio label="その他" value=0></v-radio>                
               </v-radio-group>
             </v-card-text>
-            <v-card-title>点数入力</v-card-title>
+            <v-divider :inset="inset"></v-divider>
+            <v-card-title>点数計算</v-card-title>
             <v-card-text>
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">
@@ -47,6 +52,7 @@
               </v-row>
               <h2>得点：{{member1Result}}</h2>
             </v-card-text>
+            <v-divider :inset="inset"></v-divider>
             <v-card-text>
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">
@@ -68,6 +74,7 @@
               </v-row>
               <h2>得点：{{member2Result}}</h2>
             </v-card-text>
+            <v-divider :inset="inset"></v-divider>
             <v-card-text>
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">
@@ -89,6 +96,7 @@
               </v-row>
               <h2>得点：{{member3Result}}</h2>
             </v-card-text>
+            <v-divider :inset="inset"></v-divider>
             <v-card-text v-show="targetGame.mode=='4'">
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">

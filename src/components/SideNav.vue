@@ -32,8 +32,9 @@ export default {
     return {
       items: [
         { title: 'ホーム', icon: 'mdi-home', link: { name: 'Home' } },
-        { title: '対局作成', icon: 'mdi-chess-queen', link: { name: 'Game_edit' } },
-        { title: '点数入力', icon: 'mdi-pencil', link: { name: 'Score_input' } }
+        { title: '対局作成', icon: 'mdi-account-multiple', link: { name: 'Game_edit' } },
+        { title: '点数入力', icon: 'mdi-clipboard-outline', link: { name: 'Score_input' } },
+        { title: 'ランキング', icon: 'mdi-chess-queen', link: { name: 'Ranking_view' } }
       ]
     }
   },
