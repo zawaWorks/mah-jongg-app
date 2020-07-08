@@ -2,7 +2,7 @@
   <v-container text-xs-center justify-center>
     <div id="nav">
       <router-link :to="{ name: 'Game_edit' }">対局設定</router-link> |
-      <router-link :to="{ name: 'about' }">対局編集</router-link>
+      <router-link :to="{ name: 'Home' }">対局編集</router-link>
     </div>
     <v-layout row wrap justify-center>
 
@@ -31,7 +31,7 @@
                <v-text-field v-model="game.tori" label="焼き鳥"></v-text-field>
                <v-text-field v-model="game.tobashi" label="飛ばし賞"></v-text-field>
             </v-card-text>
-            <v-divider :inset="inset"></v-divider>
+            <v-divider></v-divider>
             <v-card-text>
               <p>面子リスト</p>
               <ul>

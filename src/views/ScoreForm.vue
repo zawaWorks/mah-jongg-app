@@ -29,7 +29,7 @@
                 <v-radio label="その他" value=0></v-radio>                
               </v-radio-group>
             </v-card-text>
-            <v-divider :inset="inset"></v-divider>
+            <v-divider></v-divider>
             <v-card-title>点数計算</v-card-title>
             <v-card-text>
               <v-row align="center">
@@ -52,7 +52,7 @@
               </v-row>
               <h2>得点：{{member1Result}}</h2>
             </v-card-text>
-            <v-divider :inset="inset"></v-divider>
+            <v-divider></v-divider>
             <v-card-text>
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">
@@ -74,7 +74,7 @@
               </v-row>
               <h2>得点：{{member2Result}}</h2>
             </v-card-text>
-            <v-divider :inset="inset"></v-divider>
+            <v-divider></v-divider>
             <v-card-text>
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">
@@ -82,7 +82,7 @@
                     :items="targetGame.members"
                     item-text="name"
                     label="西家"
-                    item-value3="No"
+                    item-value="No"
                     v-model="score.member3.name_no"
                     required>
                   ></v-select>
@@ -96,7 +96,7 @@
               </v-row>
               <h2>得点：{{member3Result}}</h2>
             </v-card-text>
-            <v-divider :inset="inset"></v-divider>
+            <v-divider></v-divider>
             <v-card-text v-show="targetGame.mode=='4'">
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">
@@ -413,7 +413,7 @@ export default {
       this.member3Result
       this.member4Result
     },
-    ...mapActions(['fetchGames','addScore'])
+    ...mapActions(['addScore'])
   }
 }
 </script>

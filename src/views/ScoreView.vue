@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-parsing-error */
 <template>
   <v-container text-xs-center justify-center>
     <div id="nav">
@@ -24,47 +25,45 @@
               </v-row>
             </v-card-text>
         </v-card>
-        <v-simple-table :headers='headers' :items='addresses'>
-          <template v-slot:default>
+        <v-simple-table>
+          <template>
             <thead>
               <tr>
                 <th class="text-left">#</th>
-                <th class="text-left" v-for="(item, name) in targetGame.members" :key="name">{{item.name}}</th>
+                <th class="text-left" v-for="(item, id) in targetGame.members" :key="id" value:id>{{item.name}}</th>
+                <th class="text-left">操作</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in ranking" :key="item.rank">
-                <td>{{ item.rank }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.sam_result }}</td>
-                <td>{{ item.point }}</td>
+              <tr v-for="(list, index) in score_list" :key="list">
+                <td v-for="item in score_list[index]" :key="item">{{item}}</td>
+                <td>
+                  <router-link :to="{ name: 'Home'}">
+                    <v-icon small class="mr-2">mdi-pencil</v-icon>
+                  </router-link>
+                </td>
               </tr>
             </tbody>
           </template>
         </v-simple-table>
-      </v-flex>
-<!--
-      <v-flex>
+
         <div>
           <p>
-            {{targetGame}}<br>
+            {{score_list}}<br>
             {{}}<br>
             {{}}
 
           </p>
         </div>
+        -->
       </v-flex>
--->
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   created(){
-    this.fetchGames()
-    this.fetchScores()
     this.games = this.$store.state.games
     this.scores = this.$store.state.scores
   },
@@ -74,17 +73,48 @@ export default {
       game_id:null,
       games: [],
       scores: [],
-      ranking:[],
+      score_list:[],
     }
   },
   watch:{
     game_id: function(){
+      this.scores = this.$store.state.scores
+      this.score_list = []
+      this.No = 0
       this.targetGame = this.$store.getters.getMembersById(this.game_id)
+      this.scores.forEach((function (value){
+        if(value.game_id == this.targetGame.id){
+          //console.log(value)
+          this.score = []
+          this.score.push(this.No++)
+          this.targetGame.members.forEach((function(member){
+            if(member.No == value.member1.name_no){
+              this.score.push(value.member1.result)
+            }else if(member.No == value.member2.name_no){
+              this.score.push(value.member2.result)
+            }else if(member.No == value.member3.name_no){
+              this.score.push(value.member3.result)
+            }else if(member.No == value.member4.name_no){
+              this.score.push(value.member4.result)
+            }else{
+              this.score.push("")
+            }
+          }.bind(this)))
+          this.score_list.push(this.score)
+          this.score = []
+          console.log(this.score)
+        }
+      }.bind(this)))
     },
   },
     methods: {
-    ...mapActions(['fetchGames','fetchScores'])
   }
 }
 </script>
+
+<style scoped lang="scss">
+a {
+  text-decoration: none;
+}
+</style>
 

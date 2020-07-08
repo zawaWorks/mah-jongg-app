@@ -17,8 +17,8 @@
 import { mapActions } from 'vuex';
 export default {
   created () {
-    this.fetchGames()
     this.fetchScores()
+    this.fetchGames()
     this.games = this.$store.state.games
     this.scores = this.$store.state.scores
     },

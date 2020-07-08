@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   created(){
     this.games = this.$store.state.games
@@ -62,7 +61,6 @@ export default {
     }
   },
     methods: {
-    ...mapActions(['fetchGames'])
   }
 }
 </script>
