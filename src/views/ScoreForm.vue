@@ -146,7 +146,9 @@
 import { mapActions } from 'vuex';
 export default {
   created () {
+    this.fetchGames()
     this.games = this.$store.state.games
+
   },
   data () {
     return {
@@ -413,7 +415,7 @@ export default {
       this.member3Result
       this.member4Result
     },
-    ...mapActions(['addScore'])
+    ...mapActions(['addScore','fetchGames','fetchScores'])
   }
 }
 </script>

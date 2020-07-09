@@ -25,6 +25,9 @@ export default new Vuex.Store({
       game.id = id
       state.games.push(game)
     },
+    resetGames (state) {
+      state.games.splice(0)
+    },
     updateGame (state, { id, game }) {
       const index = state.game.findIndex(game => game.id === id)
 
@@ -33,6 +36,9 @@ export default new Vuex.Store({
     addScore (state, { id, score}) {
       score.id = id
       state.scores.push(score)
+    },
+    resetScores (state) {
+      state.scores.splice(0)
     },
     deleteAddress (state, { id }) {
       const index = state.addresses.findIndex(address => address.id === id)
@@ -45,6 +51,7 @@ export default new Vuex.Store({
       commit('toggleSideMenu')
     },
     fetchGames ({ commit }){
+      commit('resetGames')
       firebase.firestore().collection(`games`).get().then(snapshot => {
         snapshot.forEach(doc => commit( 'addGame', { id: doc.id, game: doc.data()}))
       })
@@ -60,6 +67,7 @@ export default new Vuex.Store({
       })
     },
     fetchScores ({ commit }){
+      commit('resetScores')
       firebase.firestore().collection(`scores`).get().then(snapshot => {
         snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
       })

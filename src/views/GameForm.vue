@@ -120,7 +120,7 @@ export default {
       this.game.members = []
       this.member_No = 1
     },
-      ...mapActions(['addGame'])
+      ...mapActions(['addGame','fetchGames','fetchScores'])
   }
 }
 </script>
