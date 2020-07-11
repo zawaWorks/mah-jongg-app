@@ -2,8 +2,8 @@
 <template>
   <v-container text-xs-center justify-center>
     <div id="nav">
-      <router-link :to="{ name: 'Score_input' }">ランキング</router-link> |
-      <router-link :to="{ name: 'Score_view' }">個人戦績</router-link>
+      <router-link :to="{ name: 'Ranking_view' }">ランキング</router-link>
+      <!-- | <router-link :to="{ name: 'Score_view' }">個人戦績</router-link> -->
     </div>
     <v-layout>
 
@@ -31,22 +31,15 @@
             <template>
               <thead>
                 <tr>
-                  <th class="text-left">#</th>
-                  <th class="text-left" v-for="(item, id) in targetGame.members" :key="id" value:id>{{item.name}}</th>
-                  <th class="text-left">操作</th>
+                  <th class="text-left">順位</th>
+                  <th class="text-left">得点</th>
+                  <th class="text-left">氏名</th>
+                  <th class="text-left">ポイント</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(list, index) in score_list" :key="list">
-                  <td v-for="item in score_list[index]" :key="item" v-show="game_id!=item">{{item}}</td>
-                  <td>
-                    <router-link :to="{ name: 'Home'}">
-                      <v-icon small class="mr-2">mdi-pencil</v-icon>
-                    </router-link>
-                  </td>
-                </tr>
-                <tr>
-                  <td v-for="sum in score_sum" :key="sum">{{sum}}</td>
+                <tr v-for="(list, index) in rank_list" :key="list">
+                  <td v-for="item in rank_list[index]" :key="item" v-show="game_id!=item">{{item}}</td>
                 </tr>
               </tbody>
             </template>
@@ -55,9 +48,9 @@
         <!--
         <div>
           <p>
-            {{score_sum}}<br>
-            {{}}<br>
-            {{}}
+            {{this.$store.state.game_id}}<br>
+            {{this.game_id}}<br>
+            {{rank_list}}
 
           </p>
         </div>
@@ -77,6 +70,7 @@ export default {
     this.scores = this.$store.state.scores
     this.games = this.$store.state.games
     this.scores = this.$store.state.scores
+    //this.game_id = this.$store.state.game_id
   },
   data () {
     return {
@@ -86,19 +80,19 @@ export default {
       scores: [],
       score_list:[],
       score_sum:[],
+      rank:[],
+      rank_list:[],
     }
   },
   watch:{
     game_id: function(){
       this.scores = this.$store.state.scores
       this.score_list = []
-      this.No = 1
       this.targetGame = this.$store.getters.getMembersById(this.game_id)
       this.scores.forEach((function (value){
         if(value.game_id == this.targetGame.id){
           //console.log(value)
           this.score = []
-          this.score.push(this.No++)
           this.targetGame.members.forEach((function(member){
             if(member.No == value.member1.name_no){
               this.score.push(value.member1.result)
@@ -112,7 +106,6 @@ export default {
               this.score.push(null)
             }
           }.bind(this)))
-          this.score.push(value.game_id)
           this.score_list.push(this.score)
           this.score = []
           //console.log(this.score)
@@ -131,8 +124,19 @@ export default {
           }
         }.bind(this)) 
       }.bind(this)))
-      this.score_sum.splice(0, 1, '合計')
-      this.score_sum.splice(-1, 1)
+      this.rank = []
+      this.rank_list = []
+      this.score_sum.forEach(function(value,index){
+        this.rank.push(value)
+        this.rank.push(this.targetGame.members[index].name)
+        this.rank.push(value*this.targetGame.rate)
+        this.rank_list.push(this.rank)
+        this.rank = []
+      }.bind(this))
+      this.rank_list.sort(function(a,b){return(b[0] - a[0]);});
+      this.rank_list.forEach(function(value,index){
+        this.rank_list[index].unshift(index+1)
+      }.bind(this))
     },
   },
     methods: {

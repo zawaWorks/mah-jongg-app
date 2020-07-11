@@ -70,7 +70,7 @@ export default {
     created () {
     this.game.name = "名無しの対局"
     this.game.mode = "4"
-    this.game.rate = 0.3
+    this.game.rate = 50
     this.game.nengu = 10
     this.game.start_score = 25
     this.game.kaeshi = 30

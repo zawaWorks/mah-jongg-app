@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     login_user: null,
     drawer: false,
+    game_id: null,
     games: [],
     scores: []
     },
@@ -32,6 +33,9 @@ export default new Vuex.Store({
       const index = state.game.findIndex(game => game.id === id)
 
       state.game[index] = game
+    },
+    setGameID(state, game_id){
+      state.game_id = game_id
     },
     addScore (state, { id, score}) {
       score.id = id
@@ -60,6 +64,9 @@ export default new Vuex.Store({
       firebase.firestore().collection(`games`).add(game).then(doc => {
         commit('addGame', { id: doc.id, game})
       })
+    },
+    setGameID({ commit }, game_id){
+      commit('setGameID', game_id)
     },
     addScore({ commit }, score) {
       firebase.firestore().collection(`scores`).add(score).then(doc => {

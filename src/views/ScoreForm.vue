@@ -125,19 +125,17 @@
             </v-card-text>  
           </v-form>
         </v-card>
-      </v-flex>
 <!--
-      <v-flex>
         <div>
           <p>
-            {{score}}<br>
+            {{this.$store.state.game_id}}<br>
             {{}}<br>
             {{}}
 
           </p>
         </div>
-      </v-flex>
 -->
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -382,6 +380,7 @@ export default {
   watch:{
     'score.game_id': function(){
       this.targetGame = this.$store.getters.getMembersById(this.score.game_id)
+      this.setGameID(this.score.game_id)
     },
   },
 
@@ -415,7 +414,7 @@ export default {
       this.member3Result
       this.member4Result
     },
-    ...mapActions(['addScore','fetchGames','fetchScores'])
+    ...mapActions(['addScore','fetchGames','fetchScores','setGameID'])
   }
 }
 </script>

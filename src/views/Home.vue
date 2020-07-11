@@ -5,7 +5,7 @@
           <h1>ホーム画面(今はデバッグ用）
           </h1>
           <p>{{ games }}</p>
-          <p>{{scores}}</p>
+          <p>{{}}</p>
         </div>
     </v-layout>
   </v-container>
@@ -21,6 +21,7 @@ export default {
     this.fetchGames()
     this.games = this.$store.state.games
     this.scores = this.$store.state.scores
+    //this.games.reverse()
     },
   data () {
     return {
