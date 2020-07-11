@@ -1,13 +1,14 @@
 <template>
   <v-container text-xs-center>
     <v-layout row wrap justify-center>
+      <v-flex>
         <div class="about">
-          <h1>ホーム画面(未完成）
-          </h1>
-          <p>かっこいいロゴとか</p>
-          <p>使い方説明とか</p>
-          <p>そういう感じにする予定</p>
+          <img src="../static/top_image.png" width="100%" />
+          <h2>使用方法</h2>
+          <li>メニューの「対局作成」から対局設定を行います。</li>
+          <li>対局後にメニューの「点数入力」から点数入力を行います。</li>
         </div>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -27,7 +28,7 @@ export default {
   data () {
     return {
       games: [],
-      scores: []
+      scores: [],
     }
   },
   methods:{
