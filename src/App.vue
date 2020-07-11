@@ -8,7 +8,7 @@
     >
       <!--<v-app-bar-nav-icon v-show="$store.state.login_user" @click.stop="toggleSideMenu"></v-app-bar-nav-icon>-->
       <v-app-bar-nav-icon @click.stop="toggleSideMenu"></v-app-bar-nav-icon>
-      <v-toolbar-title>麻雀スコア管理</v-toolbar-title>
+      <v-toolbar-title>麻雀スコア管理（仮）</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items v-if="$store.state.login_user">
         <v-icon @click="logout">mdi-logout</v-icon> 

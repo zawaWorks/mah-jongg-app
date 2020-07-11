@@ -2,10 +2,11 @@
   <v-container text-xs-center>
     <v-layout row wrap justify-center>
         <div class="about">
-          <h1>ホーム画面(今はデバッグ用）
+          <h1>ホーム画面(未完成）
           </h1>
-          <p>{{ games }}</p>
-          <p>{{}}</p>
+          <p>かっこいいロゴとか</p>
+          <p>使い方説明とか</p>
+          <p>そういう感じにする予定</p>
         </div>
     </v-layout>
   </v-container>
