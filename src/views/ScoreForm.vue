@@ -2,7 +2,7 @@
   <v-container text-xs-center justify-center>
     <div id="nav">
       <router-link :to="{ name: 'Score_input' }">点数入力</router-link> |
-      <router-link :to="{ name: 'Score_view' }">点数編集</router-link>
+      <router-link :to="{ name: 'Score_edit' }">点数編集</router-link>
     </div>
 
     <v-layout row wrap justify-center>
@@ -47,8 +47,8 @@
               <v-text-field type="number" v-model.number="score.member1.score" label="点数（百点単位）" required></v-text-field>
               <v-row justify="space-around">
                 <v-checkbox class="mx-2" v-model="score.member1.tori" label="鳥" value=1></v-checkbox>
-                <v-checkbox class="mx-2" v-model="score.member1.tobashi" label="飛" value=1></v-checkbox>
                 <v-checkbox class="mx-2" v-model="score.member1.hako" label="箱" value=1></v-checkbox>
+                <v-checkbox class="mx-2" v-model="score.member1.tobashi" label="飛" value=1></v-checkbox>
               </v-row>
               <h2>得点：{{member1Result}}</h2>
             </v-card-text>
@@ -69,8 +69,8 @@
               <v-text-field type="number" v-model.number="score.member2.score" label="点数（百点単位）" required></v-text-field>
               <v-row justify="space-around">
                 <v-checkbox v-model="score.member2.tori" label="鳥" value=1></v-checkbox>
-                <v-checkbox v-model="score.member2.tobashi" label="飛" value=1></v-checkbox>
                 <v-checkbox v-model="score.member2.hako" label="箱" value=1></v-checkbox>
+                <v-checkbox v-model="score.member2.tobashi" label="飛" value=1></v-checkbox>
               </v-row>
               <h2>得点：{{member2Result}}</h2>
             </v-card-text>
@@ -91,8 +91,8 @@
               <v-text-field type="number" v-model.number="score.member3.score" label="点数（百点単位）" required></v-text-field>
               <v-row justify="space-around">
                 <v-checkbox v-model="score.member3.tori" label="鳥" value=1></v-checkbox>
-                <v-checkbox v-model="score.member3.tobashi" label="飛" value=1></v-checkbox>
                 <v-checkbox v-model="score.member3.hako" label="箱" value=1></v-checkbox>
+                <v-checkbox v-model="score.member3.tobashi" label="飛" value=1></v-checkbox>
               </v-row>
               <h2>得点：{{member3Result}}</h2>
             </v-card-text>
@@ -113,8 +113,8 @@
               <v-text-field type="number" v-model.number="score.member4.score" label="点数（百点単位）" required></v-text-field>
               <v-row justify="space-around">
                 <v-checkbox v-model="score.member4.tori" label="鳥" value=1></v-checkbox>
-                <v-checkbox v-model="score.member4.tobashi" label="飛" value=1></v-checkbox>
                 <v-checkbox v-model="score.member4.hako" label="箱" value=1></v-checkbox>
+                <v-checkbox v-model="score.member4.tobashi" label="飛" value=1></v-checkbox>
               </v-row>
               <h2>得点：{{member4Result}}</h2>
             </v-card-text>
@@ -125,16 +125,16 @@
             </v-card-text>  
           </v-form>
         </v-card>
-<!--
+      <!--
         <div>
           <p>
-            {{this.$store.state.game_id}}<br>
+            {{score}}<br>
             {{}}<br>
             {{}}
 
           </p>
         </div>
--->
+      -->
       </v-flex>
     </v-layout>
   </v-container>
@@ -146,7 +146,13 @@ export default {
   created () {
     this.fetchGames()
     this.games = this.$store.state.games
-
+    if (!this.$route.params.score_id) return
+    const score = this.$store.getters.getScoreById(this.$route.params.score_id)
+    if (score) {
+      this.score = score
+    } else {
+      this.$router.push({ name: 'Score_input' })
+    }
   },
   data () {
     return {
@@ -161,6 +167,7 @@ export default {
         game_id:null,
         member1:{
           rank:null,
+          kari_result:0,
           result:0,
           tori:0,
           tobashi:0,
@@ -168,6 +175,7 @@ export default {
         },
         member2:{
           rank:null,
+          kari_result:0,
           result:0,
           tori:0,
           tobashi:0,
@@ -175,6 +183,7 @@ export default {
         },
         member3:{
           rank:null,
+          kari_result:0,
           result:0,
           tori:0,
           tobashi:0,
@@ -182,6 +191,7 @@ export default {
         },
         member4:{
           rank:null,
+          kari_result:0,
           result:0,
           tori:0,
           tobashi:0,
@@ -244,8 +254,11 @@ export default {
     },
     member1Result: function(){
       this.memberRank
+      var nengu = this.targetGame.nengu * this.score.taku;
+      console.log(nengu)
       if(this.score.member1.rank == 1){
-        var result = (this.score.member2.result + this.score.member3.result + this.score.member4.result) * -1
+        var kari_result = (this.score.member2.kari_result + this.score.member3.kari_result + this.score.member4.kari_result) * -1
+        var result = kari_result + nengu
       }else{
         var kaeshi = Math.ceil(this.score.member1.score / 10) - this.targetGame.kaeshi;
         var umaoka = 0;
@@ -256,7 +269,6 @@ export default {
         }else if(this.score.member1.rank == 4){
           umaoka = this.targetGame.uma1 * -1
         }
-        var nengu = this.targetGame.nengu * this.score.taku;
         var tori_minus = this.targetGame.tori * -this.score.member1.tori * (this.targetGame.mode - ((this.score.member1.tori * 1) + (this.score.member2.tori * 1) + (this.score.member3.tori * 1) + (this.score.member4.tori * 1)));
         if(this.score.member1.tori != 1){
           var tori_plus = this.targetGame.tori * ((this.score.member1.tori * 1) + (this.score.member2.tori * 1) + (this.score.member3.tori * 1) + (this.score.member4.tori * 1));
@@ -265,19 +277,24 @@ export default {
         }
         var tobashi = this.targetGame.tobashi *  this.score.member1.tobashi * ((this.score.member1.hako * 1) + (this.score.member2.hako * 1) + (this.score.member3.hako * 1) + (this.score.member4.hako * 1));
         var hako = this.targetGame.tobashi * (this.score.member1.hako * -1)
-        result = kaeshi + nengu + tori_minus + tori_plus + tobashi + hako + umaoka;
+        kari_result = kaeshi + tori_minus + tori_plus + tobashi + hako + umaoka;
+        result = kari_result + nengu
       }
       if(this.score.member1.score == null) return 0;
       if(isNaN(result)) return 0;
       if(!isFinite(result)) return 0;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.score.member1.kari_result = kari_result;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.score.member1.result = result;
       return result      
     },
     member2Result: function(){
       this.memberRank
+      var nengu = this.targetGame.nengu * this.score.taku;
       if(this.score.member2.rank == 1){
-        var result = (this.score.member1.result + this.score.member3.result + this.score.member4.result) * -1
+        var kari_result = (this.score.member1.kari_result + this.score.member3.kari_result + this.score.member4.kari_result) * -1
+        var result = kari_result + nengu
       }else{
         var kaeshi = Math.ceil(this.score.member2.score / 10) - this.targetGame.kaeshi;
         var umaoka = 0;
@@ -290,7 +307,6 @@ export default {
         }else if(this.score.member2.rank == 4){
           umaoka = this.targetGame.uma1 * -1
         }
-        var nengu = this.targetGame.nengu * this.score.taku;
         var tori_minus = this.targetGame.tori * -this.score.member2.tori * (this.targetGame.mode - ((this.score.member1.tori * 1) + (this.score.member2.tori * 1) + (this.score.member3.tori * 1) + (this.score.member4.tori * 1)));
         if(this.score.member2.tori != 1){
           var tori_plus = this.targetGame.tori * ((this.score.member1.tori * 1) + (this.score.member2.tori * 1) + (this.score.member3.tori * 1) + (this.score.member4.tori * 1));
@@ -299,19 +315,24 @@ export default {
         }
         var tobashi = this.targetGame.tobashi *  this.score.member2.tobashi * ((this.score.member1.hako * 1) + (this.score.member2.hako * 1) + (this.score.member3.hako * 1) + (this.score.member4.hako * 1));
         var hako = this.targetGame.tobashi * (this.score.member2.hako * -1)
-        result = kaeshi + nengu + tori_minus + tori_plus + tobashi + hako + umaoka;
+        kari_result = kaeshi + tori_minus + tori_plus + tobashi + hako + umaoka;
+        result = kari_result + nengu
       }
       if(this.score.member2.score == null) return 0;
       if(isNaN(result)) return 0;
       if(!isFinite(result)) return 0;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.score.member2.kari_result = kari_result;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.score.member2.result = result;
       return result     
     },
     member3Result: function(){
       this.memberRank
+      var nengu = this.targetGame.nengu * this.score.taku;
       if(this.score.member3.rank == 1){
-        var result = (this.score.member1.result + this.score.member2.result + this.score.member4.result) * -1
+        var kari_result = (this.score.member1.kari_result + this.score.member2.kari_result + this.score.member4.kari_result) * -1
+        var result = kari_result + nengu
       }else{
         var kaeshi = Math.ceil(this.score.member3.score / 10) - this.targetGame.kaeshi;
         var umaoka = 0;
@@ -324,7 +345,6 @@ export default {
         }else if(this.score.member3.rank == 4){
           umaoka = this.targetGame.uma1 * -1
         }
-        var nengu = this.targetGame.nengu * this.score.taku;
         var tori_minus = this.targetGame.tori * -this.score.member3.tori * (this.targetGame.mode - ((this.score.member1.tori * 1) + (this.score.member2.tori * 1) + (this.score.member3.tori * 1) + (this.score.member4.tori * 1)));
         if(this.score.member3.tori != 1){
           var tori_plus = this.targetGame.tori * ((this.score.member1.tori * 1) + (this.score.member2.tori * 1) + (this.score.member3.tori * 1) + (this.score.member4.tori * 1));
@@ -333,19 +353,24 @@ export default {
         }
         var tobashi = this.targetGame.tobashi *  this.score.member3.tobashi * ((this.score.member1.hako * 1) + (this.score.member2.hako * 1) + (this.score.member3.hako * 1) + (this.score.member4.hako * 1));
         var hako = this.targetGame.tobashi * (this.score.member3.hako * -1)
-        result = kaeshi + nengu + tori_minus + tori_plus + tobashi + hako + umaoka;
+        kari_result = kaeshi + tori_minus + tori_plus + tobashi + hako + umaoka;
+        result = kari_result + nengu
       }
       if(this.score.member3.score == null) return 0;
       if(isNaN(result)) return 0;
       if(!isFinite(result)) return 0;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.score.member3.kari_result = kari_result;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.score.member3.result = result;
       return result     
     },
     member4Result: function(){
       this.memberRank
+      var nengu = this.targetGame.nengu * this.score.taku;
       if(this.score.member4.rank == 1){
-        var result = (this.score.member1.result + this.score.member2.result + this.score.member3.result) * -1
+        var kari_result = (this.score.member1.kari_result + this.score.member2.kari_result + this.score.member3.kari_result) * -1
+        var result = kari_result + nengu
       }else{
         var kaeshi = Math.ceil(this.score.member4.score / 10) - this.targetGame.kaeshi;
         var umaoka = 0;
@@ -358,7 +383,6 @@ export default {
         }else if(this.score.member4.rank == 4){
           umaoka = this.targetGame.uma1 * -1
         }
-        var nengu = this.targetGame.nengu * this.score.taku;
         var tori_minus = this.targetGame.tori * -this.score.member4.tori * (this.targetGame.mode - ((this.score.member1.tori * 1) + (this.score.member2.tori * 1) + (this.score.member3.tori * 1) + (this.score.member4.tori * 1)));
         if(this.score.member4.tori != 1){
           var tori_plus = this.targetGame.tori * ((this.score.member1.tori * 1) + (this.score.member2.tori * 1) + (this.score.member3.tori * 1) + (this.score.member4.tori * 1));
@@ -367,11 +391,14 @@ export default {
         }
         var tobashi = this.targetGame.tobashi *  this.score.member4.tobashi * ((this.score.member1.hako * 1) + (this.score.member2.hako * 1) + (this.score.member3.hako * 1) + (this.score.member4.hako * 1));
         var hako = this.targetGame.tobashi * (this.score.member4.hako * -1)
-        result = kaeshi + nengu + tori_minus + tori_plus + tobashi + hako + umaoka;
+        kari_result = kaeshi + tori_minus + tori_plus + tobashi + hako + umaoka;
+        result = kari_result + nengu
       }
       if(this.score.member4.score == null) return 0;
       if(isNaN(result)) return 0;
       if(!isFinite(result)) return 0;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.score.member4.kari_result = kari_result;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.score.member4.result = result;
       return result      

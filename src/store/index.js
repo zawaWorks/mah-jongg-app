@@ -85,6 +85,7 @@ export default new Vuex.Store({
     photoURL: state => state.login_user ? state.login_user.photoURL: '',
     uid: state => state.login_user ? state.login_user.uid : null,
     getMembersById: state => id => state.games.find(game => game.id === id),
+    getScoreById: state => id => state.scores.find(score => score.id === id)
   },
   modules: {
   }

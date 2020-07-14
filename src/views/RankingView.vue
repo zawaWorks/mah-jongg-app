@@ -1,15 +1,14 @@
-/* eslint-disable vue/no-parsing-error */
 <template>
   <v-container text-xs-center justify-center>
     <div id="nav">
-      <router-link :to="{ name: 'Ranking_view' }">ランキング</router-link>
+      <router-link :to="{ name: 'Ranking_view' }">ランキング</router-link> |
+      <router-link :to="{ name: 'Score_view' }">集計表</router-link>
       <!-- | <router-link :to="{ name: 'Score_view' }">個人戦績</router-link> -->
     </div>
     <v-layout>
 
       <v-flex xs12 mt-5 justify-center>
         <v-card>
-
             <v-card-text> 
               <v-row align="center">
                 <v-col class="d-flex" cols="12" sm="6">

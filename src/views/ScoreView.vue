@@ -2,8 +2,8 @@
 <template>
   <v-container text-xs-center justify-center>
     <div id="nav">
-      <router-link :to="{ name: 'Score_input' }">点数入力</router-link> |
-      <router-link :to="{ name: 'Score_view' }">点数編集</router-link>
+      <router-link :to="{ name: 'Ranking_view' }">ランキング</router-link> |
+      <router-link :to="{ name: 'Score_view' }">集計表</router-link>
     </div>
     <v-layout>
 
@@ -33,17 +33,11 @@
                 <tr>
                   <th class="text-left">#</th>
                   <th class="text-left" v-for="(item, id) in targetGame.members" :key="id" value:id>{{item.name}}</th>
-                  <th class="text-left">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(list, index) in score_list" :key="list">
-                  <td v-for="item in score_list[index]" :key="item" v-show="game_id!=item">{{item}}</td>
-                  <td>
-                    <router-link :to="{ name: 'Home'}">
-                      <v-icon small class="mr-2">mdi-pencil</v-icon>
-                    </router-link>
-                  </td>
+                  <td v-for="score in score_list[index]" :key="score">{{score}}</td>
                 </tr>
                 <tr>
                   <td v-for="sum in score_sum" :key="sum">{{sum}}</td>
@@ -55,7 +49,7 @@
         <!--
         <div>
           <p>
-            {{score_sum}}<br>
+            {{score_list[0]}}<br>
             {{}}<br>
             {{}}
 
@@ -73,8 +67,6 @@ export default {
   created(){
     this.fetchScores()
     this.fetchGames()
-    this.games = this.$store.state.games
-    this.scores = this.$store.state.scores
     this.games = this.$store.state.games
     this.scores = this.$store.state.scores
   },
@@ -112,7 +104,7 @@ export default {
               this.score.push(null)
             }
           }.bind(this)))
-          this.score.push(value.game_id)
+          //this.score.push(value.game_id)
           this.score_list.push(this.score)
           this.score = []
           //console.log(this.score)
@@ -132,7 +124,7 @@ export default {
         }.bind(this)) 
       }.bind(this)))
       this.score_sum.splice(0, 1, '合計')
-      this.score_sum.splice(-1, 1)
+      //this.score_sum.splice(-1, 1)
     },
   },
     methods: {
@@ -140,10 +132,4 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-a {
-  text-decoration: none;
-}
-</style>
 
