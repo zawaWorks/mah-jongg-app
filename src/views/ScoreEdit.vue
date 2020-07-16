@@ -32,7 +32,7 @@
             <v-icon small class="mr-2" @click="deleteConfirm(item.id)">mdi-delete</v-icon>
           </template>
         </v-data-table>
-        
+        <!--
         <div>
           <p>
             {{this.score_list}}<br>
@@ -80,7 +80,7 @@ export default {
       this.scores = this.$store.state.scores
       this.targetScore_list = []
       this.No = 1
-      this.targetGame = this.$store.getters.getMembersById(this.game_id)
+      this.targetGame = this.$store.getters.getGameById(this.game_id)
       this.scores.forEach((function(scores){
         if(scores.game_id == this.targetGame.id){
           this.targetScore_list.push(scores)
@@ -104,6 +104,8 @@ export default {
         console.log(id)
         this.deleteScore({ id })
         //this.$router.push({ name: 'Score_edit' })
+        this.fetchScores()
+        this.scores = this.$store.state.scores
       }
     },
     ...mapActions(['deleteScore','fetchGames','fetchScores'])

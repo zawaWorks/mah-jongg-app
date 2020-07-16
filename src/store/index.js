@@ -79,29 +79,28 @@ export default new Vuex.Store({
         snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
       })
     },
-    updateScore ({ getters, commit }, { id, score }) {
-      if (getters.uid) {
-        firebase.firestore().collection(`scores/${getters.uid}`).doc(id).update(score).then(() => {
+    updateScore ({ commit }, { id, score }) {
+      firebase.firestore().collection(`scores`).doc(id).update(score).then(() => {
+        commit('resetScores')
+      })
+      firebase.firestore().collection(`scores`).get().then(snapshot => {
+        snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
+      })
+    },
+    deleteScore ({ commit }, { id }) {
+        firebase.firestore().collection(`scores`).doc(id).delete().then(() => {
           commit('resetScores')
         })
         firebase.firestore().collection(`scores`).get().then(snapshot => {
           snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
         })
-      }
-    },
-    deleteScore ({ getters, commit }, { id }) {
-      if (getters.uid) {
-        firebase.firestore().collection(`scores/${getters.uid}`).doc(id).delete().then(() => {
-          commit('resetScores')
-        })
-      }
     }
   },
   getters:{
     userName: state => state.login_user ? state.login_user.displayName : '',
     photoURL: state => state.login_user ? state.login_user.photoURL: '',
     uid: state => state.login_user ? state.login_user.uid : null,
-    getMembersById: state => id => state.games.find(game => game.id === id),
+    getGameById: state => id => state.games.find(game => game.id === id),
     getScoreById: state => id => state.scores.find(score => score.id === id)
   },
   modules: {

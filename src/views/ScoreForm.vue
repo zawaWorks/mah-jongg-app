@@ -125,11 +125,11 @@
             </v-card-text>  
           </v-form>
         </v-card>
-      
+      <!--
         <div>
           <p>
-            {{score}}<br>
-            {{}}<br>
+            {{score.game_id}}<br>
+            {{targetGame}}<br>
             {{}}
 
           </p>
@@ -434,7 +434,7 @@ export default {
   },
   watch:{
     'score.game_id': function(){
-      this.targetGame = this.$store.getters.getMembersById(this.score.game_id)
+      this.targetGame = this.$store.getters.getGameById(this.score.game_id)
       this.setGameID(this.score.game_id)
     },
   },
@@ -443,9 +443,11 @@ export default {
     submit () {
       if (this.$route.params.score_id) {
         this.updateScore({ id: this.$route.params.score_id, score: this.score })
+        this.$router.push({ name: 'Score_edit'})
       } else {
         this.score.date = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
         this.addScore(this.score)
+        //this.$router.push({ name: 'Score_input', params: { score_id: null }})
       }
       this.score.member1.score = null
       this.score.member1.name_no = null
@@ -472,6 +474,13 @@ export default {
       this.member2Result
       this.member3Result
       this.member4Result
+      this.scrollTop()
+    },
+    scrollTop: function(){
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     },
     ...mapActions(['addScore','updateScore','fetchGames','fetchScores','setGameID'])
   }

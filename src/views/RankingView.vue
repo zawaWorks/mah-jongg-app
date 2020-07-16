@@ -87,7 +87,7 @@ export default {
     game_id: function(){
       this.scores = this.$store.state.scores
       this.score_list = []
-      this.targetGame = this.$store.getters.getMembersById(this.game_id)
+      this.targetGame = this.$store.getters.getGameById(this.game_id)
       this.scores.forEach((function (value){
         if(value.game_id == this.targetGame.id){
           //console.log(value)
