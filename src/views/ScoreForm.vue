@@ -125,7 +125,7 @@
             </v-card-text>  
           </v-form>
         </v-card>
-      <!--
+      
         <div>
           <p>
             {{score}}<br>
@@ -166,6 +166,7 @@ export default {
       score: {
         game_id:null,
         member1:{
+          name:null,
           rank:null,
           kari_result:0,
           result:0,
@@ -174,6 +175,7 @@ export default {
           hako:0
         },
         member2:{
+          name:null,
           rank:null,
           kari_result:0,
           result:0,
@@ -182,6 +184,7 @@ export default {
           hako:0
         },
         member3:{
+          name:null,
           rank:null,
           kari_result:0,
           result:0,
@@ -190,6 +193,7 @@ export default {
           hako:0
         },
         member4:{
+          name:null,
           rank:null,
           kari_result:0,
           result:0,
@@ -252,10 +256,11 @@ export default {
       }
       return score_array;
     },
+
     member1Result: function(){
       this.memberRank
       var nengu = this.targetGame.nengu * this.score.taku;
-      console.log(nengu)
+      //console.log(nengu)
       if(this.score.member1.rank == 1){
         var kari_result = (this.score.member2.kari_result + this.score.member3.kari_result + this.score.member4.kari_result) * -1
         var result = kari_result + nengu
@@ -287,10 +292,16 @@ export default {
       this.score.member1.kari_result = kari_result;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.score.member1.result = result;
+      this.targetGame.members.forEach((function(member){
+        if(member.No == this.score.member1.name_no){
+          this.score.member1.name = member.name
+        }
+        }.bind(this)))
       return result      
     },
     member2Result: function(){
       this.memberRank
+      //this.nameCheck
       var nengu = this.targetGame.nengu * this.score.taku;
       if(this.score.member2.rank == 1){
         var kari_result = (this.score.member1.kari_result + this.score.member3.kari_result + this.score.member4.kari_result) * -1
@@ -325,10 +336,16 @@ export default {
       this.score.member2.kari_result = kari_result;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.score.member2.result = result;
+      this.targetGame.members.forEach((function(member){
+        if(member.No == this.score.member2.name_no){
+          this.score.member2.name = member.name
+        }
+        }.bind(this)))
       return result     
     },
     member3Result: function(){
       this.memberRank
+      //this.nameCheck
       var nengu = this.targetGame.nengu * this.score.taku;
       if(this.score.member3.rank == 1){
         var kari_result = (this.score.member1.kari_result + this.score.member2.kari_result + this.score.member4.kari_result) * -1
@@ -363,10 +380,16 @@ export default {
       this.score.member3.kari_result = kari_result;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.score.member3.result = result;
+      this.targetGame.members.forEach((function(member){
+        if(member.No == this.score.member3.name_no){
+          this.score.member3.name = member.name
+        }
+        }.bind(this)))
       return result     
     },
     member4Result: function(){
       this.memberRank
+      //this.nameCheck
       var nengu = this.targetGame.nengu * this.score.taku;
       if(this.score.member4.rank == 1){
         var kari_result = (this.score.member1.kari_result + this.score.member2.kari_result + this.score.member3.kari_result) * -1
@@ -401,6 +424,11 @@ export default {
       this.score.member4.kari_result = kari_result;
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.score.member4.result = result;
+      this.targetGame.members.forEach((function(member){
+        if(member.No == this.score.member4.name_no){
+          this.score.member4.name = member.name
+        }
+        }.bind(this)))
       return result      
     }
   },
@@ -413,8 +441,12 @@ export default {
 
   methods:{
     submit () {
-      this.score.date = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
-      this.addScore(this.score)
+      if (this.$route.params.score_id) {
+        this.updateScore({ id: this.$route.params.score_id, score: this.score })
+      } else {
+        this.score.date = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
+        this.addScore(this.score)
+      }
       this.score.member1.score = null
       this.score.member1.name_no = null
       this.score.member1.tori = 0
@@ -441,7 +473,7 @@ export default {
       this.member3Result
       this.member4Result
     },
-    ...mapActions(['addScore','fetchGames','fetchScores','setGameID'])
+    ...mapActions(['addScore','updateScore','fetchGames','fetchScores','setGameID'])
   }
 }
 </script>

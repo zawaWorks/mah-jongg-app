@@ -79,6 +79,23 @@ export default new Vuex.Store({
         snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
       })
     },
+    updateScore ({ getters, commit }, { id, score }) {
+      if (getters.uid) {
+        firebase.firestore().collection(`scores/${getters.uid}`).doc(id).update(score).then(() => {
+          commit('resetScores')
+        })
+        firebase.firestore().collection(`scores`).get().then(snapshot => {
+          snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
+        })
+      }
+    },
+    deleteScore ({ getters, commit }, { id }) {
+      if (getters.uid) {
+        firebase.firestore().collection(`scores/${getters.uid}`).doc(id).delete().then(() => {
+          commit('resetScores')
+        })
+      }
+    }
   },
   getters:{
     userName: state => state.login_user ? state.login_user.displayName : '',

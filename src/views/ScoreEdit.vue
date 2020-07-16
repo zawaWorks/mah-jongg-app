@@ -24,9 +24,9 @@
             </v-card-text>
         </v-card>
         <v-divider></v-divider>
-        <v-data-table :headers='headers' :items='addresses'>
+        <v-data-table :headers='headers' :items='score_list'>
           <template v-slot:item.action="{ item }">
-            <router-link :to="{ name: 'Address_edit', params: { address_id: item.id }}">
+            <router-link :to="{ name: 'Score_input', params: { score_id: item.id }}">
               <v-icon small class="mr-2">mdi-pencil</v-icon>
             </router-link>
             <v-icon small class="mr-2" @click="deleteConfirm(item.id)">mdi-delete</v-icon>
@@ -35,9 +35,9 @@
         
         <div>
           <p>
-            {{this.$store.state.game_id}}<br>
-            {{this.game_id}}<br>
-            {{rank_list}}
+            {{this.score_list}}<br>
+            {{}}<br>
+            {{}}
 
           </p>
         </div>
@@ -65,29 +65,48 @@ export default {
       score_list:[],
       score_sum:[],
       headers: [
-        { text: '名前', value: 'name' },
-        { text: '電話番号', value: 'tel' },
-        { text: 'メールアドレス', value: 'email' },
-        { text: '住所', value: 'address' },
+        { text: '日時', value: 'date' },
+        { text: '東家', value: 'member1' },
+        { text: '南家', value: 'member2' },
+        { text: '北家', value: 'member3' },
+        { text: '西家', value: 'member4' },
         { text: '操作', value: 'action', sortable: false }
       ],
     }
   },
   watch:{
     game_id: function(){
+      this.score_list=[]
       this.scores = this.$store.state.scores
-      this.score_list = []
+      this.targetScore_list = []
       this.No = 1
       this.targetGame = this.$store.getters.getMembersById(this.game_id)
+      this.scores.forEach((function(scores){
+        if(scores.game_id == this.targetGame.id){
+          this.targetScore_list.push(scores)
+        }
+      }.bind(this)))
+      this.targetScore_list.forEach((function(scores){
+        const score = []
+        score.date = scores.date
+        score.member1 = scores.member1.rank + "位　" + scores.member1.name + "　(" + scores.member1.result + "点)"
+        score.member2 = scores.member2.rank + "位　" + scores.member2.name + "　(" + scores.member2.result + "点)"
+        score.member3 = scores.member3.rank + "位　" + scores.member3.name + "　(" + scores.member3.result + "点)"
+        score.member4 = scores.member4.rank + "位　" + scores.member4.name + "　(" + scores.member4.result + "点)"
+        score.id = scores.id
+        this.score_list.push(score)
+      }.bind(this)))
     },
   },
     methods: {
     deleteConfirm (id) {
       if (confirm('削除してよろしいですか？')) {
-        this.deleteAddress({ id })
+        console.log(id)
+        this.deleteScore({ id })
+        //this.$router.push({ name: 'Score_edit' })
       }
     },
-    ...mapActions(['deleteAddress','fetchGames','fetchScores'])
+    ...mapActions(['deleteScore','fetchGames','fetchScores'])
   }
 }
 </script>

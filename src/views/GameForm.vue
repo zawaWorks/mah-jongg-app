@@ -51,15 +51,17 @@
             </v-card-text>
           </v-form>
         </v-card>
-      </v-flex>
-<!--
-      <v-flex>
+      <!--
         <div>
-          <hr>
-          {{ $data.game }}
+          <p>
+            {{score}}<br>
+            {{}}<br>
+            {{}}
+
+          </p>
         </div>
+      -->
       </v-flex>
--->
     </v-layout>
   </v-container>
 </template>

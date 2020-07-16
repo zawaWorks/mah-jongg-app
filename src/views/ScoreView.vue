@@ -91,6 +91,7 @@ export default {
           //console.log(value)
           this.score = []
           this.score.push(this.No++)
+          //↓は修正する
           this.targetGame.members.forEach((function(member){
             if(member.No == value.member1.name_no){
               this.score.push(value.member1.result)
@@ -104,6 +105,7 @@ export default {
               this.score.push(null)
             }
           }.bind(this)))
+          //ここまで
           //this.score.push(value.game_id)
           this.score_list.push(this.score)
           this.score = []
