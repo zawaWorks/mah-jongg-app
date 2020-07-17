@@ -65,6 +65,16 @@ export default new Vuex.Store({
         commit('addGame', { id: doc.id, game})
       })
     },
+    updateGame ({ commit }, { id, game }) {
+      firebase.firestore().collection(`games`).doc(id).update(game).then(() => {
+        commit('resetGames')
+      })
+    },
+    deleteGame ({ commit }, { id }) {
+        firebase.firestore().collection(`games`).doc(id).delete().then(() => {
+          commit('resetGames')
+        })
+    },
     setGameID({ commit }, game_id){
       commit('setGameID', game_id)
     },
@@ -83,16 +93,10 @@ export default new Vuex.Store({
       firebase.firestore().collection(`scores`).doc(id).update(score).then(() => {
         commit('resetScores')
       })
-      firebase.firestore().collection(`scores`).get().then(snapshot => {
-        snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
-      })
     },
     deleteScore ({ commit }, { id }) {
         firebase.firestore().collection(`scores`).doc(id).delete().then(() => {
           commit('resetScores')
-        })
-        firebase.firestore().collection(`scores`).get().then(snapshot => {
-          snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
         })
     }
   },

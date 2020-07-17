@@ -1,7 +1,7 @@
 <template>
   <v-container text-xs-center justify-center>
     <div id="nav">
-      <router-link :to="{ name: 'Score_input' }">点数入力</router-link> |
+      <router-link :to="{ name: 'Score_form' }">点数入力</router-link> |
       <router-link :to="{ name: 'Score_edit' }">点数編集</router-link>
     </div>
     <v-layout>
@@ -26,7 +26,7 @@
         <v-divider></v-divider>
         <v-data-table :headers='headers' :items='score_list'>
           <template v-slot:item.action="{ item }">
-            <router-link :to="{ name: 'Score_input', params: { score_id: item.id }}">
+            <router-link :to="{ name: 'Score_form', params: { score_id: item.id }}">
               <v-icon small class="mr-2">mdi-pencil</v-icon>
             </router-link>
             <v-icon small class="mr-2" @click="deleteConfirm(item.id)">mdi-delete</v-icon>
@@ -35,7 +35,7 @@
         <!--
         <div>
           <p>
-            {{this.score_list}}<br>
+            {{this.targetScore_list}}<br>
             {{}}<br>
             {{}}
 
@@ -77,6 +77,7 @@ export default {
   watch:{
     game_id: function(){
       this.score_list=[]
+      //this.fetchScores()
       this.scores = this.$store.state.scores
       this.targetScore_list = []
       this.No = 1
@@ -103,7 +104,6 @@ export default {
       if (confirm('削除してよろしいですか？')) {
         console.log(id)
         this.deleteScore({ id })
-        //this.$router.push({ name: 'Score_edit' })
         this.fetchScores()
         this.scores = this.$store.state.scores
       }

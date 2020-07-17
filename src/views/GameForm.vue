@@ -1,8 +1,8 @@
 <template>
   <v-container text-xs-center justify-center>
     <div id="nav">
-      <router-link :to="{ name: 'Game_edit' }">対局設定</router-link> |
-      <router-link :to="{ name: 'Home' }">対局編集</router-link>
+      <router-link :to="{ name: 'Game_form' }">対局設定</router-link> |
+      <router-link :to="{ name: 'Game_edit' }">対局編集</router-link>
     </div>
     <v-layout row wrap justify-center>
 
@@ -40,13 +40,15 @@
               <v-text-field v-model="member_name" label="名前">
                 <template v-slot:append>
                   <v-btn color="info" @click="addmembers">追加</v-btn>
+                  <v-btn @click="deletemembers">取消</v-btn>
                 </template>
               </v-text-field>
             </v-card-text>
             <v-card-text>
                <div class="text-center">
-                 <v-btn @click="$router.push({ name: 'Home' })">キャンセル</v-btn>
-                 <v-btn color="info" class="ml-2" @click="submit">対局作成</v-btn>
+                <v-btn @click="$router.push({ name: 'Home' })">キャンセル</v-btn>
+                <v-btn v-if="!update" color="info" class="ml-2" @click="submit">対局作成</v-btn>
+                <v-btn v-else color="info" class="ml-2" @click="submit">対局更新</v-btn>
                </div>
             </v-card-text>
           </v-form>
@@ -54,9 +56,9 @@
       <!--
         <div>
           <p>
-            {{score}}<br>
-            {{}}<br>
-            {{}}
+            {{game}}<br>
+            {{member_No}}<br>
+            {{test}}
 
           </p>
         </div>
@@ -70,17 +72,16 @@
 import { mapActions } from 'vuex'
 export default {
     created () {
-    this.game.name = "名無しの対局"
-    this.game.mode = "4"
-    this.game.rate = 50
-    this.game.nengu = 5
-    this.game.start_score = 25
-    this.game.kaeshi = 30
-    this.game.uma1 = 20
-    this.game.uma2 = 10
-    this.game.tori = 10
-    this.game.tobashi = 10
-    this.game.members = []
+    //this.fetchGames()
+    if (!this.$route.params.game_id) return
+    const game = this.$store.getters.getGameById(this.$route.params.game_id)
+    this.member_No = game.members.slice(-1)[0].No+1
+    this.update = true
+    if (game) {
+      this.game = game
+    } else {
+      this.$router.push({ name: 'Game_form' })
+    }
   },
   data () {
     return {
@@ -88,14 +89,24 @@ export default {
         { text: 'No', value: 'No' },
         { text: '名前', value: 'name' },
       ],
-      game: {},
-      members:[],
+      game: {
+        name:"名無しの対局",
+        mode:"4",
+        rate:50,
+        nengu:5,
+        start_score:25,
+        kaeshi:30,
+        uma1:20,
+        uma2:10,
+        tori:10,
+        tobashi:10,
+        members:[],
+      },
       member: {},
       member_name : null,
-      row: null,
       detail: false,
+      update:false,
       member_No: 1,
-      game_No:1,
     }
   },
   methods: {
@@ -107,7 +118,15 @@ export default {
       this.member = {}
       this.member_No++
     },
+    deletemembers(){
+      this.game.members.splice(-1, 1)
+      this.member_No--
+    },
     submit () {
+      if (this.$route.params.game_id) {
+        this.updateGame({ id: this.$route.params.game_id, game: this.game })
+        this.$router.push({ name: 'Game_edit'})
+      } else {
       this.game.date = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
       this.addGame(this.game)
       this.game = {}
@@ -121,8 +140,16 @@ export default {
       this.game.uma2 = 10
       this.game.members = []
       this.member_No = 1
+      }
+      this.scrollTop()
     },
-      ...mapActions(['addGame','fetchGames','fetchScores'])
+    scrollTop: function(){
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    },
+      ...mapActions(['addGame','fetchGames','updateGame'])
   }
 }
 </script>

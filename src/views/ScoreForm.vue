@@ -1,7 +1,7 @@
 <template>
   <v-container text-xs-center justify-center>
     <div id="nav">
-      <router-link :to="{ name: 'Score_input' }">点数入力</router-link> |
+      <router-link :to="{ name: 'Score_form' }">点数入力</router-link> |
       <router-link :to="{ name: 'Score_edit' }">点数編集</router-link>
     </div>
 
@@ -151,7 +151,7 @@ export default {
     if (score) {
       this.score = score
     } else {
-      this.$router.push({ name: 'Score_input' })
+      this.$router.push({ name: 'Score_form' })
     }
   },
   data () {
@@ -447,7 +447,6 @@ export default {
       } else {
         this.score.date = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
         this.addScore(this.score)
-        //this.$router.push({ name: 'Score_input', params: { score_id: null }})
       }
       this.score.member1.score = null
       this.score.member1.name_no = null

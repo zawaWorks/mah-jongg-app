@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 //import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import GameForm from '../views/GameForm.vue'
+import GameEdit from '../views/GameEdit.vue'
 import ScoreForm from '../views/ScoreForm.vue'
 import ScoreEdit from '../views/ScoreEdit.vue'
 import ScoreView from '../views/ScoreView.vue'
@@ -23,13 +24,18 @@ Vue.use(VueRouter)
   //  component: Home
   //},
   {
-    path: '/game/:game_id?/edit',
-    name: 'Game_edit',
+    path: '/game/:game_id?/form',
+    name: 'Game_form',
     component: GameForm
   },
   {
-    path: 'score/:score_id?/input',
-    name: 'Score_input',
+    path: '/game_edit',
+    name: 'Game_edit',
+    component: GameEdit
+  },
+  {
+    path: 'score/:score_id?/form',
+    name: 'Score_form',
     component: ScoreForm
   },
   {
