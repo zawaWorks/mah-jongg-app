@@ -8,7 +8,8 @@ import ScoreForm from '../views/ScoreForm.vue'
 import ScoreEdit from '../views/ScoreEdit.vue'
 import ScoreView from '../views/ScoreView.vue'
 import RankingView from '../views/RankingView.vue'
-import AddressForm from '../views/AddressForm.vue'
+import UserView from '../views/UserView.vue'
+import PersonalResult from '../views/PersonalResult.vue'
 
 Vue.use(VueRouter)
 
@@ -54,9 +55,14 @@ Vue.use(VueRouter)
     component: RankingView
   },
   {
-    path: '/addresses/:address_id?/edit',
-    name: 'Address_edit',
-    component: AddressForm
+    path: '/user_view',
+    name: 'User_view',
+    component: UserView
+  },
+  {
+    path: '/personal_result',
+    name: 'Personal_Result',
+    component: PersonalResult
   }
 ]
 

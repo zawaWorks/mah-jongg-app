@@ -8,7 +8,7 @@
     >
       <!--<v-app-bar-nav-icon v-show="$store.state.login_user" @click.stop="toggleSideMenu"></v-app-bar-nav-icon>-->
       <v-app-bar-nav-icon @click.stop="toggleSideMenu"></v-app-bar-nav-icon>
-      <v-toolbar-title>Numeri専用 麻雀点数管理（仮）</v-toolbar-title>
+      <v-toolbar-title>麻雀点数管理（仮）</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items v-if="$store.state.login_user">
         <v-icon @click="logout">mdi-logout</v-icon> 
@@ -36,7 +36,6 @@ export default {
   },
   created(){
     this.$router.push({ name: 'Home'})
-    this.fetchGames()
   //  firebase.auth().onAuthStateChanged(user => {
   //    if(user){
   //      this.setLoginUser(user)
@@ -52,7 +51,7 @@ export default {
     //
   }),
   methods:{
-    ...mapActions(['toggleSideMenu', 'setLoginUser', 'logout', 'deleteLoginUser', 'fetchGames'])
+    ...mapActions(['toggleSideMenu', 'setLoginUser', 'logout', 'deleteLoginUser'])
   }
 };
 </script>

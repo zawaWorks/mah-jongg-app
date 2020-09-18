@@ -9,6 +9,7 @@ export default new Vuex.Store({
     login_user: null,
     drawer: false,
     game_id: null,
+    Targetgame:[],
     games: [],
     scores: []
     },
@@ -42,12 +43,17 @@ export default new Vuex.Store({
       state.scores.push(score)
     },
     resetScores (state) {
-      state.scores.splice(0)
+      state.scores = []
+      //state.scores.splice(0)
     },
     deleteAddress (state, { id }) {
       const index = state.addresses.findIndex(address => address.id === id)
 
       state.addresses.splice(index, 1)
+    },
+    getTargetgame (state, { id, game}) {
+      game.id = id
+      state.Targetgame.push(game)
     },
   },
   actions: {
@@ -55,7 +61,6 @@ export default new Vuex.Store({
       commit('toggleSideMenu')
     },
     fetchGames ({ commit }){
-      commit('resetGames')
       firebase.firestore().collection(`games`).get().then(snapshot => {
         snapshot.forEach(doc => commit( 'addGame', { id: doc.id, game: doc.data()}))
       })
@@ -75,6 +80,9 @@ export default new Vuex.Store({
           commit('resetGames')
         })
     },
+    resetGames({ commit }){
+      commit('resetGames')
+    },
     setGameID({ commit }, game_id){
       commit('setGameID', game_id)
     },
@@ -84,7 +92,6 @@ export default new Vuex.Store({
       })
     },
     fetchScores ({ commit }){
-      commit('resetScores')
       firebase.firestore().collection(`scores`).get().then(snapshot => {
         snapshot.forEach(doc => commit( 'addScore', { id: doc.id, score: doc.data()}))
       })
@@ -98,7 +105,15 @@ export default new Vuex.Store({
         firebase.firestore().collection(`scores`).doc(id).delete().then(() => {
           commit('resetScores')
         })
-    }
+    },
+    resetScores({ commit }){
+      commit('resetScores')
+    },
+    getTargetgame ({ commit }, { id }){
+      firebase.firestore().collection(`games`).doc(id).get().then(snapshot => {
+        snapshot.forEach(doc => commit( 'getTargetgame', { id: doc.id, game: doc.data()}))
+      })
+    },
   },
   getters:{
     userName: state => state.login_user ? state.login_user.displayName : '',

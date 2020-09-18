@@ -4,8 +4,7 @@
       <router-link :to="{ name: 'Game_form' }">対局設定</router-link> |
       <router-link :to="{ name: 'Game_edit' }">対局編集</router-link>
     </div>
-    <v-layout>
-
+    <v-layout row wrap justify-center>
       <v-flex xs12 mt-5 justify-center>
         <v-divider></v-divider>
         <v-data-table :headers='headers' :items='games'>
@@ -32,19 +31,20 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { myMixin } from "../components/utility";
+import firebase from 'firebase';
 export default {
+  mixins: [myMixin],
   created(){
-    this.fetchGames()
-    this.games = this.$store.state.games
-    this.fetchScores()
-    this.scores = this.$store.state.scores
+    //ゲームデータの取得
+    this.getGames()
+    //スコアデータの取得
+    this.getScores()
   },
   data () {
     return {
       games: [],
       scores: [],
-      score_list:[],
       headers: [
         { text: '日時', value: 'date' },
         { text: '対局名', value: 'name' },
@@ -53,32 +53,31 @@ export default {
     }
   },
   watch:{
-
   },
     methods: {
+    //idをキーとしたゲームデータ削除
     deleteConfirm (id) {
-      if (confirm('削除してよろしいですか？')) {
-        //console.log(id)
-        this.deleteGame({ id })
-        //this.fetchGames()
-        this.score_list=[]
-        this.targetScore_list = []
+      if (confirm('削除してよろしいですか？対局を削除すると関連する点数データも削除されます')) {
+        //データ削除
+        firebase.firestore().collection(`games`).doc(id).delete()
+        //スコアデータをループし削除対象のgame_idと一致するデータを順次削除
         this.scores.forEach((function(score){
+          //game_idをもとに対象判定
           if(score.game_id == id){
-            let score_id = String(score.id)
-            console.log(score.id)
-            console.log(score_id)
-            this.deleteScore({score_id})
+            //データ削除
+            firebase.firestore().collection(`scores`).doc(score.id).delete()
           }
         }.bind(this)))
       }
+      //ゲームデータの再取得
+      this.getGames()
     },
-    ...mapActions(['deleteGame','fetchGames','fetchScores','deleteScore'])
   }
 }
 </script>
 
 <style scoped lang="scss">
+//リンクの下部線非表示
 a {
   text-decoration: none;
 }
