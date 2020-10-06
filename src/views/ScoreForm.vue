@@ -385,9 +385,9 @@ export default {
         //点数から返しを減算する
         var kaeshi = 0
         if(this.score.mode == 4 ) {
-          kaeshi = Math.ceil(this.score.member1.score / 10) - this.targetGame.kaeshi;
+          kaeshi = Math.round(this.score.member1.score / 10) - this.targetGame.kaeshi;
         }else{
-          kaeshi = Math.ceil(this.score.member1.score / 10) - 35;
+          kaeshi = Math.round(this.score.member1.score / 10) - 35;
         }
         //ウマオカ計算のための変数宣言
         var umaoka = 0;
@@ -462,9 +462,9 @@ export default {
         //点数から返しを減算する
         var kaeshi = 0
         if(this.score.mode == 4 ) {
-          kaeshi = Math.ceil(this.score.member2.score / 10) - this.targetGame.kaeshi;
+          kaeshi = Math.round(this.score.member2.score / 10) - this.targetGame.kaeshi;
         }else{
-          kaeshi = Math.ceil(this.score.member2.score / 10) - 35;
+          kaeshi = Math.round(this.score.member2.score / 10) - 35;
         }
         //ウマオカ計算のための変数宣言
         var umaoka = 0;
@@ -533,9 +533,9 @@ export default {
         //点数から返しを減算する
         var kaeshi = 0
         if(this.score.mode == 4 ) {
-          kaeshi = Math.ceil(this.score.member3.score / 10) - this.targetGame.kaeshi;
+          kaeshi = Math.round(this.score.member3.score / 10) - this.targetGame.kaeshi;
         }else{
-          kaeshi = Math.ceil(this.score.member3.score / 10) - 35;
+          kaeshi = Math.round(this.score.member3.score / 10) - 35;
         }
         //ウマオカ計算のための変数宣言
         var umaoka = 0;
@@ -604,9 +604,9 @@ export default {
         //点数から返しを減算する
         var kaeshi = 0
         if(this.score.mode == 4 ) {
-          kaeshi = Math.ceil(this.score.member4.score / 10) - this.targetGame.kaeshi;
+          kaeshi = Math.round(this.score.member4.score / 10) - this.targetGame.kaeshi;
         }else{
-          kaeshi = Math.ceil(this.score.member4.score / 10) - 35;
+          kaeshi = Math.round(this.score.member4.score / 10) - 35;
         }
         //ウマオカ計算のための変数宣言
         var umaoka = 0;
